@@ -1,0 +1,71 @@
+---
+title: "Dithwa Storm Impact: Weather Data Monitoring & Analysis Dashboard"
+subtitle: "Note: Read ABOUT panel to see the description"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+# 3 Hour Rainfall(mm) 
+
+Row
+-----------------------------------------------------------------------
+
+
+### 28 November 2025, 08.30
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+library(forcats)
+library(Ditwah)
+data(ditwah_3hr_weather_data)
+
+ditwah_3hr_weather_data |>
+  filter(report == 1) |>
+  mutate(Station_Name = fct_reorder(Station_Name, Rainfall_mm, .desc = FALSE)) |>  
+  ggplot(aes(y = Station_Name, x = Rainfall_mm)) + 
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_text(aes(label = Rainfall_mm), hjust = -0.1) +  # display value outside the bar
+  labs(x = "Rainfall (mm)", y = "Station Name", title = "2025-11-28 08:30:00*",
+       caption = paste(
+  "Source of data: Department of Meteorology, Sri Lanka (https://meteo.gov.lk/), November 28, 2025",
+  "Note: *Nuwara Eliya, Pullam, Mullaittivu are recorded at 2025-11-27",
+  sep = "\n"
+)) +
+  theme_minimal() +
+  xlim(0, max(ditwah_3hr_weather_data$Rainfall_mm, na.rm = TRUE) * 1.1)  # add space for labels
+
+
+```
+
+
+### 28 November 2025, 17.30
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+ditwah_3hr_weather_data |>
+  filter(report == 4) |>
+  mutate(
+    # Replace NA temporarily with -Inf for sorting
+    Rainfall_for_order = ifelse(is.na(Rainfall_mm), -Inf, Rainfall_mm),
+    # Reorder stations by rainfall (max -> min)
+    Station_Name = fct_reorder(Station_Name, Rainfall_for_order, .desc = FALSE)
+  ) |>
+  ggplot(aes(y = Station_Name, x = Rainfall_for_order)) + 
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_text(aes(label = Rainfall_mm), hjust = -0.1) +  # display value outside the bar
+  labs(x = "Rainfall (mm)", y = "Station Name", title = "2025-11-28 17:30:00",
+       caption = paste(
+  "Source of data: Department of Meteorology, Sri Lanka (https://meteo.gov.lk/), November 28, 2025"
+)) +
+  theme_minimal() +
+  xlim(0, max(ditwah_3hr_weather_data$Rainfall_mm, na.rm = TRUE) * 1.1)  
+
+
+```
+
