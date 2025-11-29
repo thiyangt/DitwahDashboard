@@ -38,7 +38,7 @@ p1 <- weather_report |>
     fill = Reporting_Time
   )) +
   geom_col(position = "dodge", width = 0.7) +
-  scale_fill_manual(values = c("#d95f02", "#1b9e77")) +
+  scale_fill_manual(values = c("#56147DFF", "#E76E5BFF")) +
   labs(
     title = "Comparison of Daily Rainfall: 28 Nov 2025 vs 29 Nov 2025",
     x = "Meteorological Station",
@@ -55,22 +55,23 @@ p1
 ggplotly(p1)
 
 ```
-# Meteorological Station
+
+# Hydro Catchment Area
 
 ```{r, fig.width=20}
-weather_order <-
+weather_order2 <-
   weather_report |>
-  filter(Type == "Meteorological Station",
+  filter(Type == "Hydro Catchment Area",
          Reporting_Time == "for the 24 hour period ending at 0830SLTS on 28-11-2025") |>
   mutate(Daily_Rainfall_mm = as.numeric(Daily_Rainfall_mm)) |>
   arrange(desc(Daily_Rainfall_mm)) |>
   pull(Name)
 
 p1 <- weather_report |>
-  filter(Type == "Meteorological Station") |>
+  filter(Type == "Hydro Catchment Area") |>
   mutate(
     Daily_Rainfall_mm = as.numeric(Daily_Rainfall_mm),
-    Name = factor(Name, levels = weather_order)   # <-- Reordered here
+    Name = factor(Name, levels = weather_order2)   # <-- Reordered here
   ) |>
   ggplot(aes(
     x = Name,
@@ -78,7 +79,7 @@ p1 <- weather_report |>
     fill = Reporting_Time
   )) +
   geom_col(position = "dodge", width = 0.7) +
-  scale_fill_manual(values = c("#d95f02", "#1b9e77")) +
+  scale_fill_manual(values = c("#0D0887FF", "#56C667FF")) +
   labs(
     title = "Comparison of Daily Rainfall: 28 Nov 2025 vs 29 Nov 2025",
     x = "Meteorological Station",
