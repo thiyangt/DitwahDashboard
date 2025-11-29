@@ -182,7 +182,16 @@ ggplotly(p3)
 
 ```
 
+# Flood Level Data
 
+```{r, fig.width=10}
+data("flood_water_level")
+flood_water_level |>
+#  filter(Report_Time == "2025-11-28 09:30:00 +0530") |>
+  filter(River_Basin == "Kelani Ganga\r(RB 01)") |>
+ggplot(aes(x=Gauging_Station, y=Water_Level, fill=Water_Level_Time)) + 
+  geom_col(position = "dodge") 
+```
 
 
 # ABOUT
