@@ -184,7 +184,7 @@ ggplotly(p3)
 
 # Flood Level Data
 
-## Kelani Ganga (RB 01)
+Kelani Ganga (RB 01)
 
 ```{r, fig.width=10}
 library(patchwork)
@@ -201,7 +201,7 @@ p1 <- flood_water_level %>%
     y = "Water Level (ft)",
     title = "Nagalagam Street"
   ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 p2 <- flood_water_level %>%
@@ -216,7 +216,7 @@ p2 <- flood_water_level %>%
     y = "Water Level (m)",
     title = "Hanwella"
   ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 p3 <- flood_water_level %>%
@@ -231,7 +231,7 @@ p3 <- flood_water_level %>%
     y = "Water Level (m)",
     title = "Glencourse"
   ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 p4 <- flood_water_level %>%
@@ -246,7 +246,7 @@ p4 <- flood_water_level %>%
     y = "Water Level (m)",
     title = "Kithulgala"
   ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 p5 <- flood_water_level %>%
@@ -261,7 +261,7 @@ p5 <- flood_water_level %>%
     y = "Water Level (m)",
     title = "Holombuwa"
   ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 p6 <- flood_water_level %>%
@@ -276,7 +276,7 @@ p6 <- flood_water_level %>%
     y = "Water Level (m)",
     title = "Deraniyagala"
   ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 p7 <- flood_water_level %>%
@@ -291,7 +291,7 @@ p7 <- flood_water_level %>%
     y = "Water Level (m)",
     title = "Norwood"
   ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 (p1|p2|p3|p4)/(p5|p6|p7)
