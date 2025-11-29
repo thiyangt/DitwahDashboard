@@ -17,8 +17,10 @@ data(weather_report)
 
 # Meteorological Station
 
-```{r, fig.width=20}
-weather_order <-
+Data source: Department of Meteorology, Sri Lanka (Weather Report for the 24-hour Period). Refer to the ABOUT section for additional details. 
+
+```{r, fig.height=10}
+weather_order_28 <-
   weather_report |>
   filter(Type == "Meteorological Station",
          Reporting_Time == "for the 24 hour period ending at 0830SLTS on 28-11-2025") |>
@@ -26,11 +28,22 @@ weather_order <-
   arrange(desc(Daily_Rainfall_mm)) |>
   pull(Name)
 
+
+all_stations <- weather_report |>
+  filter(Type == "Meteorological Station") |>
+  pull(Name) |>
+  unique()
+
+new_stations <- setdiff(all_stations, weather_order_28)
+
+# Final order: 28-Nov ordered stations first, new ones appended
+weather_order <- c(weather_order_28, new_stations)
+
 p1 <- weather_report |>
   filter(Type == "Meteorological Station") |>
   mutate(
     Daily_Rainfall_mm = as.numeric(Daily_Rainfall_mm),
-    Name = factor(Name, levels = weather_order)   # <-- Reordered here
+    Name = factor(Name, levels = weather_order)
   ) |>
   ggplot(aes(
     x = Name,
@@ -43,7 +56,8 @@ p1 <- weather_report |>
     title = "Comparison of Daily Rainfall: 28 Nov 2025 vs 29 Nov 2025",
     x = "Meteorological Station",
     y = "Rainfall (mm)",
-    fill = "Reporting Time"
+    fill = "Reporting Time",
+    caption = "Data source: Department of Meteorology, Sri Lanka (Weather Report for the 24hour Period)"
   ) +
   theme_minimal() +
   theme(
@@ -51,15 +65,19 @@ p1 <- weather_report |>
     legend.position = "bottom"
   )
 
-p1
+
 ggplotly(p1)
 
 ```
 
+
+
 # Hydro Catchment Area
 
+Data source: Department of Meteorology, Sri Lanka (Weather Report for the 24-hour Period). Refer to the ABOUT section for additional details. 
+
 ```{r, fig.width=20}
-weather_order2 <-
+weather_order_28_h <-
   weather_report |>
   filter(Type == "Hydro Catchment Area",
          Reporting_Time == "for the 24 hour period ending at 0830SLTS on 28-11-2025") |>
@@ -67,11 +85,22 @@ weather_order2 <-
   arrange(desc(Daily_Rainfall_mm)) |>
   pull(Name)
 
-p1 <- weather_report |>
+
+all_stations_h <- weather_report |>
+  filter(Type == "Hydro Catchment Area") |>
+  pull(Name) |>
+  unique()
+
+new_stations_h <- setdiff(all_stations_h, weather_order_28_h)
+
+# Final order: 28-Nov ordered stations first, new ones appended
+weather_order_h <- c(weather_order_28_h, new_stations_h)
+
+p2 <- weather_report |>
   filter(Type == "Hydro Catchment Area") |>
   mutate(
     Daily_Rainfall_mm = as.numeric(Daily_Rainfall_mm),
-    Name = factor(Name, levels = weather_order2)   # <-- Reordered here
+    Name = factor(Name, levels = weather_order_h)
   ) |>
   ggplot(aes(
     x = Name,
@@ -79,12 +108,13 @@ p1 <- weather_report |>
     fill = Reporting_Time
   )) +
   geom_col(position = "dodge", width = 0.7) +
-  scale_fill_manual(values = c("#0D0887FF", "#56C667FF")) +
+  scale_fill_manual(values = c("#440154", "#21918c")) +
   labs(
     title = "Comparison of Daily Rainfall: 28 Nov 2025 vs 29 Nov 2025",
     x = "Meteorological Station",
     y = "Rainfall (mm)",
-    fill = "Reporting Time"
+    fill = "Reporting Time",
+    caption = "Data source: Department of Meteorology, Sri Lanka (Weather Report for the 24hour Period)"
   ) +
   theme_minimal() +
   theme(
@@ -92,7 +122,84 @@ p1 <- weather_report |>
     legend.position = "bottom"
   )
 
-p1
-ggplotly(p1)
+
+ggplotly(p2)
 
 ```
+
+# Other rainfall stations
+
+Data source: Department of Meteorology, Sri Lanka (Weather Report for the 24-hour Period). Refer to the ABOUT section for additional details. 
+
+```{r, fig.width=20}
+weather_order_28_o <-
+  weather_report |>
+  filter(Type == "Other rainfall stations",
+         Reporting_Time == "for the 24 hour period ending at 0830SLTS on 28-11-2025") |>
+  mutate(Daily_Rainfall_mm = as.numeric(Daily_Rainfall_mm)) |>
+  arrange(desc(Daily_Rainfall_mm)) |>
+  pull(Name)
+
+
+all_stations_o <- weather_report |>
+  filter(Type == "Other rainfall stations") |>
+  pull(Name) |>
+  unique()
+
+new_stations_o <- setdiff(all_stations_o, weather_order_28_o)
+
+# Final order: 28-Nov ordered stations first, new ones appended
+weather_order_o <- c(weather_order_28_o, new_stations_o)
+
+p3 <- weather_report |>
+  filter(Type == "Other rainfall stations") |>
+  mutate(
+    Daily_Rainfall_mm = as.numeric(Daily_Rainfall_mm),
+    Name = factor(Name, levels = weather_order_o)
+  ) |>
+  ggplot(aes(
+    x = Name,
+    y = Daily_Rainfall_mm,
+    fill = Reporting_Time
+  )) +
+  geom_col(position = "dodge", width = 0.7) +
+  scale_fill_manual(values = c("#0d0887", "#FFA500")) +
+  labs(
+    title = "Comparison of Daily Rainfall: 28 Nov 2025 vs 29 Nov 2025",
+    x = "Meteorological Station",
+    y = "Rainfall (mm)",
+    fill = "Reporting Time",
+    caption = "Data source: Department of Meteorology, Sri Lanka (Weather Report for the 24hour Period)"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1),
+    legend.position = "bottom"
+  )
+
+
+ggplotly(p3)
+
+```
+
+
+
+
+# ABOUT
+
+**Dashboard Creator:**
+
+Dr Thiyanga S. Talagala, Department of Statistics, University of Sri jayewardenepura
+
+Contact: ttalagala@sjp.ac.lk
+
+**Data Sources:**
+
+The [Department of Meteorology, Sri Lanka](https://meteo.gov.lk/)
+
+The [Disaster Management Center](https://www.dmc.gov.lk/index.php?option=com_dmcreports&view=reports&Itemid=277&report_type_id=6&lang=en)
+
+**Note:**
+
+Sri Lanka was hit by Diwah on November 28–29, 2025, causing widespread damage across the island. The [Department of Meteorology, Sri Lanka](https://meteo.gov.lk/), and the [Disaster Management Center](https://www.dmc.gov.lk/index.php?option=com_dmcreports&view=reports&Itemid=277&report_type_id=6&lang=en)
+ published weather data to keep the community informed. This dashboard is created using publicly available data for educational purposes, weather monitoring, and early warning. As visualizations make complex data easier to understand, the dashboard presents the weather information in graphical form. The author of this dashboard is not affiliated with the data-providing institutions, and these institutions were not involved in its creation.
