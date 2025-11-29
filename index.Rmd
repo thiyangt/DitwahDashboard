@@ -185,12 +185,114 @@ ggplotly(p3)
 # Flood Level Data
 
 ```{r, fig.width=10}
+library(patchwork)
 data("flood_water_level")
-flood_water_level |>
-#  filter(Report_Time == "2025-11-28 09:30:00 +0530") |>
-  filter(River_Basin == "Kelani Ganga\r(RB 01)") |>
-ggplot(aes(x=Gauging_Station, y=Water_Level, fill=Water_Level_Time)) + 
-  geom_col(position = "dodge") 
+p1 <- flood_water_level %>%
+  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
+  filter(Gauging_Station == "Nagalagam Street") %>%
+  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
+  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
+  geom_line(color = "#0072B2") +
+  geom_point(color = "#D55E00") +
+  labs(
+    x = "Date & Time",
+    y = "Water Level (ft)",
+    title = "Nagalagam Street"
+  ) +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p2 <- flood_water_level %>%
+  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
+  filter(Gauging_Station == "Hanwella") %>%
+  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
+  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
+  geom_line(color = "#0072B2") +
+  geom_point(color = "#D55E00") +
+  labs(
+    x = "Date & Time",
+    y = "Water Level (m)",
+    title = "Hanwella"
+  ) +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p3 <- flood_water_level %>%
+  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
+  filter(Gauging_Station == "Glencourse") %>%
+  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
+  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
+  geom_line(color = "#0072B2") +
+  geom_point(color = "#D55E00") +
+  labs(
+    x = "Date & Time",
+    y = "Water Level (m)",
+    title = "Glencourse"
+  ) +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p4 <- flood_water_level %>%
+  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
+  filter(Gauging_Station == "Kithulgala") %>%
+  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
+  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
+  geom_line(color = "#0072B2") +
+  geom_point(color = "#D55E00") +
+  labs(
+    x = "Date & Time",
+    y = "Water Level (m)",
+    title = "Kithulgala"
+  ) +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p5 <- flood_water_level %>%
+  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
+  filter(Gauging_Station == "Holombuwa") %>%
+  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
+  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
+  geom_line(color = "#0072B2") +
+  geom_point(color = "#D55E00") +
+  labs(
+    x = "Date & Time",
+    y = "Water Level (m)",
+    title = "Holombuwa"
+  ) +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p6 <- flood_water_level %>%
+  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
+  filter(Gauging_Station == "Deraniyagala") %>%
+  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
+  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
+  geom_line(color = "#0072B2") +
+  geom_point(color = "#D55E00") +
+  labs(
+    x = "Date & Time",
+    y = "Water Level (m)",
+    title = "Deraniyagala"
+  ) +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p7 <- flood_water_level %>%
+  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
+  filter(Gauging_Station == "Norwood") %>%
+  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
+  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
+  geom_line(color = "#0072B2") +
+  geom_point(color = "#D55E00") +
+  labs(
+    x = "Date & Time",
+    y = "Water Level (m)",
+    title = "Norwood"
+  ) +
+  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "6 hours") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+(p1|p2|p3|p4)/(p5|p6|p7)
 ```
 
 
