@@ -182,120 +182,109 @@ ggplotly(p3)
 
 ```
 
-# Flood Level Data
+# Flood Level Data: Kelani Ganga (RB 01)
 
-Kelani Ganga (RB 01)
+Data Source: Hydrology and Disaster Management Division, Irrigation Department, Sri Lanka
 
-```{r, fig.width=10}
-library(patchwork)
-data("flood_water_level")
-p1 <- flood_water_level %>%
-  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
-  filter(Gauging_Station == "Nagalagam Street") %>%
-  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
-  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
-  geom_line(color = "#0072B2") +
-  geom_point(color = "#D55E00") +
-  labs(
-    x = "Date & Time",
-    y = "Water Level (ft)",
-    title = "Nagalagam Street"
+
+
+```{r, fig.width=15}
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+
+# Step 1: Combine Date + Time into POSIXct
+df <- realtime_waterlevel_kelani_ganga |>
+  filter(HydrometricStation != "Nagalagam Street") |>
+  mutate(
+    DateTime = ymd_h(paste(Date, Time))
+  )
+
+# Step 2: Plot
+p1 <- ggplot(df, aes(x = DateTime, y = RiverWaterLevel)) +
+  geom_line() +
+  geom_point(size=0.3) +
+  # Alert, Minor Flood, Major Flood Levels
+  geom_hline(aes(yintercept = Alert_level, colour = "Alert Level"), linetype = "dashed") +
+  geom_hline(aes(yintercept = Minor_Flood_Level, colour = "Minor Flood Level"), linetype = "dotdash", linewidth = 1) +
+  geom_hline(aes(yintercept = Major_Flood_level, colour = "Major Flood Level"), linetype = "solid", linewidth = 1) +
+
+  scale_colour_manual(
+    name = "Thresholds",
+    values = c(
+      "Alert Level" = "#1b9e77",
+      "Minor Flood Level" = "#7570b3",
+      "Major Flood Level" = "#d95f02"
+    )
   ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-p2 <- flood_water_level %>%
-  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
-  filter(Gauging_Station == "Hanwella") %>%
-  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
-  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
-  geom_line(color = "#0072B2") +
-  geom_point(color = "#D55E00") +
+
   labs(
+    title = "Real-time Hourly River Water Level",
     x = "Date & Time",
-    y = "Water Level (m)",
-    title = "Hanwella"
+    y = paste0("Water Level (", unique(df$RiverWaterLevel_Unit), ")")
   ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-p3 <- flood_water_level %>%
-  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
-  filter(Gauging_Station == "Glencourse") %>%
-  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
-  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
-  geom_line(color = "#0072B2") +
-  geom_point(color = "#D55E00") +
-  labs(
-    x = "Date & Time",
-    y = "Water Level (m)",
-    title = "Glencourse"
-  ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-p4 <- flood_water_level %>%
-  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
-  filter(Gauging_Station == "Kithulgala") %>%
-  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
-  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
-  geom_line(color = "#0072B2") +
-  geom_point(color = "#D55E00") +
-  labs(
-    x = "Date & Time",
-    y = "Water Level (m)",
-    title = "Kithulgala"
-  ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-p5 <- flood_water_level %>%
-  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
-  filter(Gauging_Station == "Holombuwa") %>%
-  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
-  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
-  geom_line(color = "#0072B2") +
-  geom_point(color = "#D55E00") +
-  labs(
-    x = "Date & Time",
-    y = "Water Level (m)",
-    title = "Holombuwa"
-  ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-p6 <- flood_water_level %>%
-  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
-  filter(Gauging_Station == "Deraniyagala") %>%
-  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
-  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
-  geom_line(color = "#0072B2") +
-  geom_point(color = "#D55E00") +
-  labs(
-    x = "Date & Time",
-    y = "Water Level (m)",
-    title = "Deraniyagala"
-  ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-p7 <- flood_water_level %>%
-  filter(River_Basin == "Kelani Ganga\r(RB 01)") %>%
-  filter(Gauging_Station == "Norwood") %>%
-  mutate(Water_Level_DateTime = as.POSIXct(Water_Level_DateTime, format = "%Y-%m-%d %H:%M")) %>%  # convert if needed
-  ggplot(aes(x = Water_Level_DateTime, y = Water_Level)) +
-  geom_line(color = "#0072B2") +
-  geom_point(color = "#D55E00") +
-  labs(
-    x = "Date & Time",
-    y = "Water Level (m)",
-    title = "Norwood"
-  ) +
-  scale_x_datetime(date_labels = "%d-%b %H:%M", date_breaks = "2 hours") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-(p1|p2|p3|p4)/(p5|p6|p7)
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(face = "bold"),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+  ) + facet_wrap(vars(HydrometricStation), ncol=6)
+
+
+p1
 ```
+
+
+
+# Kelani Ganga: Nagalagam Street
+
+
+Data Source: Hydrology and Disaster Management Division, Irrigation Department, Sri Lanka
+
+```{r, fig.width=15}
+# Step 1: Combine Date + Time into POSIXct
+df2 <- realtime_waterlevel_kelani_ganga |>
+  filter(HydrometricStation == "Nagalagam Street") |>
+  mutate(
+    DateTime = ymd_h(paste(Date, Time))
+  )
+
+# Step 2: Plot
+p2 <- ggplot(df2, aes(x = DateTime, y = RiverWaterLevel)) +
+  geom_line() +
+  geom_point() +
+  # Alert, Minor Flood, Major Flood Levels
+  geom_hline(aes(yintercept = Alert_level, colour = "Alert Level"), linetype = "dashed") +
+  geom_hline(aes(yintercept = Minor_Flood_Level, colour = "Minor Flood Level"), linetype = "dotdash", linewidth = 1) +
+  geom_hline(aes(yintercept = Major_Flood_level, colour = "Major Flood Level"), linetype = "solid", linewidth = 1) +
+ #   scale_x_datetime(
+#    date_breaks = "1 hour",
+##    date_labels = "%H:%M"
+#  ) +
+  scale_colour_manual(
+    name = "Thresholds",
+    values = c(
+      "Alert Level" = "#1b9e77",
+      "Minor Flood Level" = "#7570b3",
+      "Major Flood Level" = "#d95f02"
+    )
+  ) +
+
+  labs(
+    title = "Real-time Hourly River Water Level",
+    x = "Date & Time",
+    y = paste0("Water Level (ft)")
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(face = "bold"),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+  ) 
+
+ggplotly(p2)
+```
+
 
 
 # ABOUT
@@ -312,7 +301,11 @@ The [Department of Meteorology, Sri Lanka](https://meteo.gov.lk/)
 
 The [Disaster Management Center](https://www.dmc.gov.lk/index.php?option=com_dmcreports&view=reports&Itemid=277&report_type_id=6&lang=en)
 
+**Acknowledgement**
+
+The author gratefully acknowledges the original data providers, the Department of Meteorology, Sri Lanka,  Hydrology and Disaster Management Division, Irrigation Department, Sri Lanka and the Disaster Management Center, whose publicly available weather and disaster-related data support timely community awareness.
+
 **Note:**
 
-Sri Lanka was hit by Diwah on November 28–29, 2025, causing widespread damage across the island. The [Department of Meteorology, Sri Lanka](https://meteo.gov.lk/), and the [Disaster Management Center](https://www.dmc.gov.lk/index.php?option=com_dmcreports&view=reports&Itemid=277&report_type_id=6&lang=en)
- published weather data to keep the community informed. This dashboard is created using publicly available data for educational purposes, weather monitoring, and early warning. As visualizations make complex data easier to understand, the dashboard presents the weather information in graphical form. The author of this dashboard is not affiliated with the data-providing institutions, and these institutions were not involved in its creation.
+Sri Lanka was hit by Diwah on November 28–29, 2025, causing widespread damage across the island. The [Department of Meteorology, Sri Lanka](https://meteo.gov.lk/), Hydrology and Disaster Management Division, Irrigation Department, Sri Lanka and the [Disaster Management Center](https://www.dmc.gov.lk/index.php?option=com_dmcreports&view=reports&Itemid=277&report_type_id=6&lang=en)
+ published weather data to keep the community informed. This dashboard is created using these publicly available data for educational purposes, weather monitoring, and early warning. As visualizations make complex data easier to understand, the dashboard presents the weather information in graphical form. The author of this dashboard is not affiliated with the data-providing institutions, and these institutions were not involved in dashboard creation. 
